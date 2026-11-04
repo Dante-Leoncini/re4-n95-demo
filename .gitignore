@@ -1,0 +1,6 @@
+/trabajo/
+/datos/
+__pycache__/
+*.pyc
+*.dll
+*.so
