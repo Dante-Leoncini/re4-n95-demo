@@ -1,60 +1,63 @@
-# Resident Evil 4 en el Nokia N95 (demo de Whisk3D)
+<p align="center">
+  <b>English</b> | <a href="README.es.md">Español</a>
+</p>
 
-El primer cuarto de **Resident Evil 4** (GameCube): la llegada en la camioneta, la llamada de radio, el camino, la casa
-del aldeano y la emboscada, corriendo **nativo en un Nokia N95** (2007) con el motor de
-[Whisk3D](https://github.com/Dante-Leoncini/Whisk3D-Editor).
+# Resident Evil 4 on the Nokia N95 (Whisk3D demo)
 
-**Este repositorio existe solo para demostrar que la demo es real**: que corre de verdad en el telefono y no es un video
-hecho con IA, un montaje ni una actuacion. Cualquiera con su propia copia del juego puede armar los datos y probarla.
+The first room of **Resident Evil 4** (GameCube): the arrival in the police car, the radio call, the path, the
+villager's house and the ambush, running **natively on a Nokia N95** (2007) on the
+[Whisk3D](https://github.com/Dante-Leoncini/Whisk3D-Editor) engine.
 
-- **No contiene nada del juego.** Ni modelos, ni texturas, ni sonidos, ni codigo del juego. Los datos los genera cada
-  uno desde **su propio disco**.
-- La demo es **solo para el Nokia N95** (Symbian S60 3rd FP1). En un Nokia tactil (S60 5th, Symbian^3) hace falta
-  conectarle un teclado o un joystick de PS3.
-- Los recursos del juego original se extrajeron y se adaptaron para correr en Whisk3D con la ayuda de **Claude
-  Opus 5.5**.
+**This repository exists only to prove the demo is real**: that it actually runs on the phone and is not an AI-made
+video, an edit or a staged act. Anyone with their own copy of the game can build the data and try it.
 
-## Que hay aca
+- **It contains nothing from the game.** No models, textures, sounds or game code. Everyone builds the data from
+  **their own disc**.
+- The demo is **for the Nokia N95 only** (Symbian S60 3rd FP1). Touch Nokias (S60 5th, Symbian^3) need a keyboard or a
+  PS3 controller connected.
+- The original game assets were extracted and adapted to run on Whisk3D with the help of **Claude Opus 5.5**.
+
+## What's here
 
 | | |
 |---|---|
-| `demo/re4.sisx` | el instalador de la demo para el N95 (solo el programa, sin datos) |
-| `re4n95.py` | arma la carpeta de datos desde tu disco |
-| `extractores/`, `conversor/`, `herramientas/` | lo que usa `re4n95.py` (codigo propio, salvo lo indicado en *Creditos*) |
-| `demo/datos/` | la intro y la fuente de Whisk3D (no son del juego) |
+| `demo/re4.sisx` | the demo installer for the N95 (the program only, no data) |
+| `re4n95.py` | builds the data folder from your disc |
+| `extractores/`, `conversor/`, `herramientas/` | what `re4n95.py` uses (original code, except as noted in *Credits*) |
+| `demo/datos/` | the Whisk3D intro and font (not from the game) |
 
-## Lo que necesitas
+## What you need
 
-- **Tu disco** de Resident Evil 4 para GameCube, **version USA, disco 1**, como imagen `.rvz`, `.iso` o `.gcm`
-  (por ejemplo, sacada de tu consola con un homebrew de backup y convertida con Dolphin).
-- **Python 3.10 o mas nuevo** con `numpy` y `pillow` (`pip install numpy pillow`).
+- **Your disc** of Resident Evil 4 for GameCube, **USA version, disc 1**, as a `.rvz`, `.iso` or `.gcm` image
+  (for example, dumped from your own console with a backup homebrew and converted with Dolphin).
+- **Python 3.10 or newer** with `numpy` and `pillow` (`pip install numpy pillow`).
 - **git**.
-- **g++** (para compilar dos librerias chicas en tu maquina):
-  - Windows: [MSYS2](https://www.msys2.org/) y, en su consola, `pacman -S mingw-w64-x86_64-gcc`. Despues agrega
-    `C:\msys64\mingw64\bin` al PATH.
-  - Linux: `sudo apt install g++` (o el paquete de tu distribucion).
-- **El editor Whisk3D** (se usa para armar los modelos y las animaciones). Se compila desde
+- **g++** (to compile two small libraries on your machine):
+  - Windows: [MSYS2](https://www.msys2.org/) and, in its console, `pacman -S mingw-w64-x86_64-gcc`. Then add
+    `C:\msys64\mingw64\bin` to the PATH.
+  - Linux: `sudo apt install g++` (or your distribution's package).
+- **The Whisk3D editor** (used to build the models and animations). Build it from
   [Whisk3D-Editor](https://github.com/Dante-Leoncini/Whisk3D-Editor):
-  - Windows: `platform\windows\build_windows.bat` (necesita Visual Studio y CMake; el ejecutable queda en
+  - Windows: `platform\windows\build_windows.bat` (needs Visual Studio and CMake; the executable ends up in
     `platform\windows\build\Release\whisk3d.exe`).
-  - Linux: ver `platform/linux` en ese repositorio.
-- Unos **3 GB libres** y una conexion a internet (el script baja dos herramientas libres: ver *Creditos*).
+  - Linux: see `platform/linux` in that repository.
+- About **3 GB free** and an internet connection (the script downloads two free tools: see *Credits*).
 
-## Armar los datos
+## Building the data
 
-Windows (en una consola, desde la carpeta de este repositorio):
+Windows (in a console, from this repository's folder):
 
 ```bat
-python re4n95.py --disco "D:\juegos\Resident Evil 4 (USA) (Disc 1).rvz" --whisk3d "C:\Whisk3D-Editor\platform\windows\build\Release\whisk3d.exe"
+python re4n95.py --disco "D:\games\Resident Evil 4 (USA) (Disc 1).rvz" --whisk3d "C:\Whisk3D-Editor\platform\windows\build\Release\whisk3d.exe"
 ```
 
 Linux:
 
 ```sh
-python3 re4n95.py --disco ~/juegos/re4_disco1.iso --whisk3d ~/Whisk3D-Editor/platform/linux/build/whisk3d
+python3 re4n95.py --disco ~/games/re4_disc1.iso --whisk3d ~/Whisk3D-Editor/platform/linux/build/whisk3d
 ```
 
-El script dice cuantos pasos son y como va cada uno:
+The script tells you how many steps there are and how each one is going (its messages are in Spanish):
 
 ```
 Resident Evil 4 -> datos del Nokia N95: 31 pasos
@@ -65,100 +68,75 @@ TERMINADO en 42 min 44 s.
 Los datos estan en: ...\datos
 ```
 
-Tarda entre 25 y 40 minutos segun la maquina; el paso mas largo es *El mapa del N95* (calcula con rayos que se ve
-desde adentro de la casa: unos 15 minutos). Si algo se corta, volve a correr **el mismo comando**: sigue desde el paso
-que faltaba. Lo que hace cada paso queda
-anotado en `trabajo/registro/`. La carpeta `trabajo/` se puede borrar al terminar.
+It takes 25 to 40 minutes depending on the machine; the longest step is *El mapa del N95* (it ray-casts what can be
+seen from inside the house: about 15 minutes). If something stops, run **the same command** again: it resumes from the
+missing step. What each step does is logged in `trabajo/registro/`. The `trabajo/` folder can be deleted when done.
 
-## Instalar en el N95
+## Installing on the N95
 
-1. Copia la carpeta `datos` que armo el script a la tarjeta de memoria del telefono como **`E:\re4\datos`**
-   (con el cable USB en modo almacenamiento, o con Nokia PC Suite). Tiene que quedar `E:\re4\datos\mundo.bin`,
+1. Copy the `datos` folder built by the script to the phone's memory card as **`E:\re4\datos`**
+   (with the USB cable in mass storage mode, or with Nokia PC Suite). You should end up with `E:\re4\datos\mundo.bin`,
    `E:\re4\datos\sonidos\...`, etc.
-2. Instala `demo/re4.sisx` en la tarjeta (E:). El certificado es propio: si el telefono no deja instalar
-   aplicaciones sin firmar, en *Gestor de aplicaciones > Opciones > Configuracion* poner *Instalacion de software:
-   Todas*.
-3. Si el telefono no tiene **Open C / Open C++** (el N95 de fabrica no lo trae), instala antes los paquetes de
-   Open C / Open C++ para S60 3rd (el *Open C/C++ plug-in* de Nokia).
-4. Abri *Resident Evil 4* desde el menu de aplicaciones.
+2. Install `demo/re4.sisx` to the memory card (E:). The certificate is self-signed: if the phone refuses unsigned
+   applications, set *Application manager > Options > Settings > Software installation: All*.
+3. If the phone doesn't have **Open C / Open C++** (a stock N95 doesn't), first install the Open C / Open C++ packages
+   for S60 3rd (Nokia's *Open C/C++ plug-in*).
+4. Open *Resident Evil 4* from the applications menu.
 
-## Controles
+## Controls
 
-| | Teclado del N95 | Joystick de PS3 (Bluetooth) |
+| | N95 keypad | PS3 controller (Bluetooth) |
 |---|---|---|
-| Caminar / girar | cruceta (o 2 4 6 8) | stick izquierdo o cruceta |
-| Correr | dos toques adelante y mantener | R2 mantenido |
-| Media vuelta | dos toques atras | |
-| Apuntar | OK (o 5) | R1 o L2 mantenido |
-| Disparar | OK apuntando | X apuntando |
-| Accion del cartel (patear, saltar, hablar) | OK, o softkey izquierdo (tambien apuntando) | cuadrado (o X sin apuntar) |
-| Cuchillo | softkey derecho | L1 mantenido |
-| Recargar | 0 | circulo |
-| Saltar una cinematica | OK | X |
-| Pausa (detalle, niebla, brillo, FPS) | softkey izquierdo | Start |
-| Cuadros por segundo | # | |
+| Walk / turn | D-pad (or 2 4 6 8) | left stick or D-pad |
+| Run | double-tap forward and hold | hold R2 |
+| Quick turn | double-tap back | |
+| Aim | OK (or 5) | hold R1 or L2 |
+| Shoot | OK while aiming | X while aiming |
+| Prompt action (kick, jump, talk) | OK, or left softkey (also while aiming) | square (or X when not aiming) |
+| Knife | right softkey | hold L1 |
+| Reload | 0 | circle |
+| Skip a cutscene | OK | X |
+| Pause (detail, fog, brightness, FPS) | left softkey | Start |
+| Frames per second | # | |
 
-## Como se extraen los recursos (explicacion educativa)
+## How the assets are extracted (educational explanation)
 
-Todo se hace **de buena fe**: el proposito es mostrar que un telefono de 2007 puede mover una escena de un juego de
-GameCube, no distribuir el juego. Nada de lo que sale del disco se publica, y solo se toma lo necesario para el primer
-cuarto. A grandes rasgos:
+Everything is done **in good faith**: the purpose is to show that a 2007 phone can run a scene from a GameCube game,
+not to distribute the game. Nothing taken from the disc is published, and only what the first room needs is used.
+In broad strokes:
 
-1. **Leer el disco.** La imagen de GameCube es un sistema de archivos; [dtk](https://github.com/encounter/decomp-toolkit)
-   copia de ahi los archivos que hacen falta (unos 55, 77 MB): el cuarto (`St1/r100.das` y sus `.dat`), las
-   cinematicas (`Evd/r100sNN.evd`), los personajes (`em/pl00.drs` Leon, `em10.drs` los aldeanos, `wepNN.drs` las
-   armas), los recursos comunes (`etc/core.das`: HUD, efectos, items), las fuentes, la radio (`ss/`, `op/`) y el audio
-   (`bgm/`).
-2. **Abrir los contenedores.** Los `.das`/`.drs`/`.evd` son paquetes de archivos (algunos comprimidos con YZ2) que
-   adentro tienen modelos (BIN), paletas de texturas (TPL, formatos de la GameCube como CMPR o I8), animaciones (FCV),
-   efectos (EFF) y tablas.
-3. **Modelos y texturas.** Cada modelo se convierte a una malla con su esqueleto y las texturas se decodifican a PNG y
-   se juntan en un atlas por personaje.
-4. **Animaciones.** Las animaciones FCV guardan claves por hueso con curvas, mas cadenas de cinematica inversa. Para que
-   se muevan exactamente igual que en la consola, el script **baja la decompilacion publica del juego y compila en tu
-   maquina solo su modulo de animaciones**, y con eso evalua cada cuadro. Ese codigo no esta en este repositorio.
-5. **Cinematicas.** De cada `.evd` salen los cortes, las camaras cuadro a cuadro, quien actua en cada corte y las
-   expresiones de las caras; el audio de las voces se decodifica (DSP-ADPCM) a WAV.
-6. **El mapa.** Las piezas del cuarto se convierten a mallas con la luz del juego ya calculada en cada vertice, y se
-   arman varios niveles de detalle para el telefono (el N95 dibuja unos 9000 triangulos a 30 cuadros por segundo).
-7. **Sonido y musica.** Los bancos de efectos y las voces son DSP-ADPCM; la musica del cuarto es una secuencia MIDI con
-   sus instrumentos, que se sintetiza a WAV.
-8. **Whisk3D.** Todo eso se arma como proyectos del editor Whisk3D (el nivel y la libreria de personajes).
-9. **El N95.** Por ultimo, el conversor pasa esos proyectos a los formatos chicos que lee el telefono: el mapa en
-   bloques para la GPU, los personajes con su esqueleto, las texturas en 16 bits, el sonido en IMA ADPCM y las tablas
-   de la demo.
+1. **Reading the disc.** The GameCube image is a file system; [dtk](https://github.com/encounter/decomp-toolkit) copies
+   the needed files out of it (about 55 files, 77 MB): the room (`St1/r100.das` and its `.dat` files), the cutscenes
+   (`Evd/r100sNN.evd`), the characters (`em/pl00.drs` Leon, `em10.drs` the villagers, `wepNN.drs` the weapons), the
+   common resources (`etc/core.das`: HUD, effects, items), the fonts, the radio (`ss/`, `op/`) and the audio (`bgm/`).
+2. **Opening the containers.** The `.das`/`.drs`/`.evd` files are file packages (some compressed with YZ2) holding
+   models (BIN), texture palettes (TPL, GameCube formats such as CMPR or I8), animations (FCV), effects (EFF) and
+   tables.
+3. **Models and textures.** Each model becomes a mesh with its skeleton, and the textures are decoded to PNG and packed
+   into one atlas per character.
+4. **Animations.** FCV animations store per-bone keys with curves, plus inverse kinematics chains. To make them move
+   exactly as on the console, the script **downloads the game's public decompilation and compiles only its animation
+   module on your machine**, and uses it to evaluate every frame. That code is not in this repository.
+5. **Cutscenes.** Each `.evd` yields the cuts, the frame-by-frame cameras, who acts in each cut and the facial
+   expressions; the voice audio is decoded (DSP-ADPCM) to WAV.
+6. **The map.** The room's pieces become meshes with the game's lighting already baked into each vertex, and several
+   levels of detail are built for the phone (the N95 draws about 9000 triangles at 30 frames per second).
+7. **Sound and music.** Effect banks and voices are DSP-ADPCM; the room's music is a MIDI sequence with its
+   instruments, synthesized to WAV.
+8. **Whisk3D.** All of that is assembled as Whisk3D editor projects (the level and the character library).
+9. **The N95.** Finally, the converter turns those projects into the small formats the phone reads: the map in blocks
+   for the GPU, the characters with their skeletons, 16-bit textures, IMA ADPCM sound and the demo's tables.
 
-## Creditos y licencias
+## Credits and licenses
 
-- **Esta demo** (el script, los extractores, el conversor y el `.sisx`): Dante Leoncini, licencia
-  [PolyForm Noncommercial 1.0.0](LICENSE): se puede usar, estudiar y modificar, pero **no con fines comerciales**.
-- **Whisk3D** (editor y motor): Dante Leoncini, licencia MIT.
-- **[decomp-toolkit (dtk)](https://github.com/encounter/decomp-toolkit)**: lee el disco. Se baja al correr el script.
-- **[Decompilacion de RE4](https://github.com/adonis-singh/re4)** (CC0): sus herramientas leen los formatos del juego y
-  su modulo de animaciones se compila en tu maquina. Se baja al correr el script; no esta incluida aca.
-- **[meshoptimizer](https://github.com/zeux/meshoptimizer)** (MIT, Arseny Kapoulkine): simplifica las mallas
+- **This demo** (the script, extractors, converter and the `.sisx`): Dante Leoncini,
+  [PolyForm Noncommercial 1.0.0](LICENSE) license: free to use, study and modify, but **not for commercial purposes**.
+- **Whisk3D** (editor and engine): Dante Leoncini, MIT license.
+- **[decomp-toolkit (dtk)](https://github.com/encounter/decomp-toolkit)**: reads the disc. Downloaded when the script
+  runs.
+- **[RE4 decompilation](https://github.com/adonis-singh/re4)** (CC0): its tools read the game's formats and its
+  animation module is compiled on your machine. Downloaded when the script runs; not included here.
+- **[meshoptimizer](https://github.com/zeux/meshoptimizer)** (MIT, Arseny Kapoulkine): simplifies the meshes
   (`extractores/tools/meshopt/src`, `conversor/meshopt/src`).
-- Resident Evil 4 es de **Capcom**. Este proyecto no esta afiliado a Capcom ni usa ningun recurso suyo sin el disco
-  original del usuario.
-
----
-
-## English
-
-**Resident Evil 4** (GameCube), its first room, running **natively on a Nokia N95** (2007) on the
-[Whisk3D](https://github.com/Dante-Leoncini/Whisk3D-Editor) engine. This repository exists **only to prove the demo is
-real** (not an AI-made video or a fake): it contains **no game data and no game code**. You build the data from **your
-own disc** (RE4 GameCube, USA, disc 1) and copy it to the phone.
-
-```sh
-python re4n95.py --disco <your disc .rvz/.iso> --whisk3d <path to the Whisk3D editor>
-```
-
-Requirements: Python 3.10+ with numpy and pillow, git, g++ (MSYS2/MinGW on Windows), and the Whisk3D editor built from
-its repository. The script shows the number of steps and its progress, and resumes where it stopped if run again.
-Copy the resulting `datos` folder to the phone's memory card as `E:\re4\datos` and install `demo/re4.sisx`. The demo is
-**for the Nokia N95 only**; touch Nokias need a keyboard or a PS3 controller. The original game assets were extracted
-and adapted to Whisk3D with the help of **Claude Opus 5.5**. See *Creditos* above for third-party tools (dtk, the CC0 RE4
-decompilation tools, meshoptimizer).
-
-**License:** [PolyForm Noncommercial 1.0.0](LICENSE). Free to use, study and modify, **no commercial use**.
+- Resident Evil 4 belongs to **Capcom**. This project is not affiliated with Capcom and uses none of its assets without
+  the user's original disc.
