@@ -76,15 +76,29 @@ terminar.
 
 ## Instalar en el N95
 
-1. Copiá la carpeta `datos` que armó el script a la tarjeta de memoria del teléfono como **`E:\re4\datos`**
-   (con el cable USB en modo almacenamiento, o con Nokia PC Suite). Tiene que quedar `E:\re4\datos\mundo.bin`,
-   `E:\re4\datos\sonidos\...`, etc.
+1. Copiá **lo que hay adentro** de la carpeta `datos` que armó el script a la tarjeta de memoria del teléfono, en
+   **`E:\data\re4\`** (con el cable USB en modo almacenamiento, o con Nokia PC Suite). Tiene que quedar
+   `E:\data\re4\mundo.bin`, `E:\data\re4\sonidos\...`, etc.
 2. Instalá `demo/re4.sisx` en la tarjeta (E:). El certificado es propio: si el teléfono no deja instalar
    aplicaciones sin firmar, en *Gestor de aplicaciones > Opciones > Configuración* poné *Instalación de software:
    Todas*.
 3. Si el teléfono no tiene **Open C / Open C++** (el N95 de fábrica no lo trae), instalá antes los paquetes de
    Open C / Open C++ para S60 3rd (el *Open C/C++ plug-in* de Nokia).
 4. Abrí *Resident Evil 4* desde el menú de aplicaciones.
+
+## Memoria (teléfonos de 64 MB y de 128 MB)
+
+La demo elige el modo al arrancar, según la RAM libre:
+
+| RAM libre al arrancar | Modo | Usa con el nivel cargado | Pico (cinemáticas) |
+|---|---|---|---|
+| 60 MB o más (N95 8GB, 128 MB de RAM) | todo en calidad completa | unos 38 MB | unos 53 MB |
+| menos de 60 MB (el N95 original, 64 MB de RAM) | texturas de 256x256, el mapa sin su nivel de detalle más fino y menos modelos de aldeanos | unos 22 MB | unos 30 MB |
+
+En un N95 de 64 MB, **cerrá todas las otras aplicaciones (o reiniciá el teléfono) antes de abrir la demo**: necesita
+unos 30 MB libres. Si no puede cargar, la pantalla dice por qué (qué archivo falta o está dañado, o que no alcanza la
+memoria, con la RAM libre), y en `E:\data\re4\re4.log` está el detalle. (Los datos también se encuentran en
+`E:\re4\datos`, donde los ponían las versiones anteriores.)
 
 ## Controles
 

@@ -74,14 +74,28 @@ missing step. What each step does is logged in `trabajo/registro/`. The `trabajo
 
 ## Installing on the N95
 
-1. Copy the `datos` folder built by the script to the phone's memory card as **`E:\re4\datos`**
-   (with the USB cable in mass storage mode, or with Nokia PC Suite). You should end up with `E:\re4\datos\mundo.bin`,
-   `E:\re4\datos\sonidos\...`, etc.
+1. Copy **the contents** of the `datos` folder built by the script to the phone's memory card, into
+   **`E:\data\re4\`** (with the USB cable in mass storage mode, or with Nokia PC Suite). You should end up with
+   `E:\data\re4\mundo.bin`, `E:\data\re4\sonidos\...`, etc.
 2. Install `demo/re4.sisx` to the memory card (E:). The certificate is self-signed: if the phone refuses unsigned
    applications, set *Application manager > Options > Settings > Software installation: All*.
 3. If the phone doesn't have **Open C / Open C++** (a stock N95 doesn't), first install the Open C / Open C++ packages
    for S60 3rd (Nokia's *Open C/C++ plug-in*).
 4. Open *Resident Evil 4* from the applications menu.
+
+## Memory (64 MB and 128 MB phones)
+
+The demo picks its mode when it starts, from the free RAM:
+
+| Free RAM when it starts | Mode | Used with the level loaded | Peak (cutscenes) |
+|---|---|---|---|
+| 60 MB or more (N95 8GB, 128 MB of RAM) | everything at full quality | about 38 MB | about 53 MB |
+| less than 60 MB (the original N95, 64 MB of RAM) | textures at 256x256, the map without its finest level of detail and fewer villager models | about 22 MB | about 30 MB |
+
+On a 64 MB N95, **close every other application (or restart the phone) before opening the demo**: it needs about 30 MB
+free. If it can't load, the screen says why (which file is missing or damaged, or that there isn't enough memory, with
+the free RAM), and `E:\data\re4\re4.log` has the details. (The data is also found in `E:\re4\datos`, where older
+versions put it.)
 
 ## Controls
 

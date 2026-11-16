@@ -3,7 +3,8 @@
 
     python re4n95.py --disco "Resident Evil 4 (USA) (Disc 1).rvz" --whisk3d RUTA/whisk3d[.exe]
 
-Al terminar, copia la carpeta de salida (por defecto ./datos) a E:\\re4\\datos en la tarjeta del telefono.
+Al terminar, copia lo que hay en la carpeta de salida (por defecto ./datos) a E:\\data\\re4 en la tarjeta del telefono
+(tiene que quedar E:\\data\\re4\\mundo.bin).
 Si se corta, volve a correr el mismo comando: sigue desde el paso que fallo.
 """
 import argparse
@@ -237,7 +238,8 @@ class Armado:
             print(' listo (%s)' % duracion(time.time() - t))
         print('\nTERMINADO en %s.' % duracion(time.time() - t0))
         print('Los datos estan en: %s' % self.salida)
-        print('Copia esa carpeta a la tarjeta del N95 como E:\\re4\\datos e instala demo\\re4.sisx.')
+        print('Copia lo que hay en esa carpeta a la tarjeta del N95, en E:\\data\\re4\\ (tiene que quedar')
+        print('E:\\data\\re4\\mundo.bin), e instala demo\\re4.sisx.')
 
 
 def duracion(s):
