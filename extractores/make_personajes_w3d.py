@@ -77,7 +77,7 @@ def prefabs():
 def lineas_importar():
     g = glb_leon()
     bl = os.path.splitext(os.path.basename(g))[0]
-    out = ['selobj Cubo', 'delete', 'importgltf ' + g, 'activename %s_rig' % bl, 'objname Leon']
+    out = [base.ESCENA_NUEVA, 'importgltf ' + g, 'activename %s_rig' % bl, 'objname Leon']
     for k, nom in enumerate(base.MALLAS):
         out += ['activename ' + (bl if k == 0 else '%s.%03d' % (bl, k)), 'objname ' + nom]
     out += combate_r100.lineas_importar_pistola()
@@ -93,13 +93,19 @@ def _todos(lista):
         yield from _todos(o.get('hijos', []))
 
 
-def editar_libreria(w3d):
+def editar_libreria(w3d, rutinas=base.RUTINAS_ES):
     """lo que antes se le hacia a los personajes adentro del nivel: la pistola con esqueleto y la radio en Leon, su
     hitbox, los scripts con sus tablas (RAIZ, FXC, VOL, VENTANAS, CONF) y los sonidos; el muestrario en fila"""
     with zipfile.ZipFile(w3d) as z:
         entradas = [(i, z.read(i.filename)) for i in z.infolist()]
     datos = dict((i.filename, d) for i, d in entradas)
     proy = json.loads(datos['proyecto.json'])
+    # las rutinas de la escena nueva (Constructor, "Limpiar pantalla") vienen en el idioma de esta maquina: con su
+    # nombre en espanol, la libreria sale igual en cualquier idioma (nadie las busca por nombre)
+    es = dict(zip(rutinas, base.RUTINAS_ES))
+    for o in proy['escena']['objetos']:
+        if o.get('tipo') == 'rutina' and o.get('nombre') in es:
+            o['nombre'] = es[o['nombre']]
     col = next(o for o in proy['escena']['objetos'] if o.get('tipo') == 'coleccion')
     combate_r100.poner_pistola(col['hijos'])          # Pistola: hija de Leon, Child Of a la mano derecha
     codec_r100.radio_prop(proy)                        # Leon_radio: hija de Leon, Child Of a la izquierda, oculta
@@ -181,7 +187,7 @@ def main():
         importar = n95_glb.simplificadas(importar)
     base.correr_script(args.whisk3d, importar + ['guardarw3d ' + out])
     base.editar_proyecto(out)      # Leon: constraints de las armas, efectos del disparo, luz, leon.lua, sonidos
-    editar_libreria(out)
+    editar_libreria(out, rutinas=base.escena_de_fabrica(args.whisk3d)['rutinas'])
     # "Create Prefab" de cada personaje: el motor muda el subarbol a prefabs/<x>.w3dp y deja la instancia
     lineas = ['abrirw3d ' + out]
     for n in prefabs():

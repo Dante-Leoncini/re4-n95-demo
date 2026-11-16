@@ -363,16 +363,17 @@ def luces_lit(info, ns=LUCES_LIT, prefijo='r100_luz_'):
     return out
 
 
-def editar_mapa(w3d, info, libreria=None):
+def editar_mapa(w3d, info, libreria=None, rutinas=base.RUTINAS_ES):
     with zipfile.ZipFile(w3d) as z:
         entradas = [(i, z.read(i.filename)) for i in z.infolist()]
     datos = dict((i.filename, d) for i, d in entradas)
     proy = json.loads(datos['proyecto.json'])
     col = next(o for o in proy['escena']['objetos'] if o.get('tipo') == 'coleccion')
     # (un proyecto nuevo de Whisk3D trae un Constructor y "Limpiar pantalla": con ellos la pantalla se limpia con SU
-    # color y no con el fondo de la niebla. Afuera: el viewport limpia como siempre, con el color de la niebla)
+    # color y no con el fondo de la niebla. Afuera: el viewport limpia como siempre, con el color de la niebla.
+    # 'rutinas': sus nombres en el idioma de esta maquina, ver base.escena_de_fabrica)
     proy['escena']['objetos'] = [o for o in proy['escena']['objetos']
-                                 if not (o.get('tipo') == 'rutina' and o.get('nombre') in ('Constructor', 'Limpiar pantalla'))]
+                                 if not (o.get('tipo') == 'rutina' and o.get('nombre') in rutinas)]
     piezas = info['piezas']
     lejos = info['lejos']              # el far del juego (fog.End * (1 - far_play_ratio) + 1): ~44 m
     lod_dist = LOD_DIST
@@ -653,7 +654,7 @@ def main():
                                    '--leon', leon_n95, '--n95', '--whisk3d', args.whisk3d], stdout=subprocess.DEVNULL)
             n95_r100.convertir(base_n95, n95, originales=[libreria.archivo])
             libreria = libreria_r100.Libreria(n95)
-    lineas = ['selobj Cubo', 'delete']
+    lineas = [base.ESCENA_NUEVA]
     if not libreria:
         bl = os.path.splitext(os.path.basename(glb_leon))[0]
         lineas += [f'importgltf {glb_leon}', f'activename {bl}_rig', 'objname Leon']
@@ -672,7 +673,7 @@ def main():
     base.correr_script(args.whisk3d, lineas)
     if not libreria:
         base.editar_proyecto(out)      # Leon: constraints, efectos, luz del disparo, leon.lua, sonidos
-    editar_mapa(out, info, libreria)
+    editar_mapa(out, info, libreria, rutinas=base.escena_de_fabrica(args.whisk3d)['rutinas'])
     base.correr_script(args.whisk3d, [f'abrirw3d {out}', f'guardarw3d {out}'])
     comprimir_mallas(out)
     if not args.clasico:

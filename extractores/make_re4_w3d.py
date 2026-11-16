@@ -46,18 +46,76 @@ MIRA = (0.0, 0.95, 0.0)    # punto al que miran la camara y el viewport (pecho d
 DIST = 3.6
 
 
-def correr_script(whisk3d, lineas):
-    with tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False) as f:
+# ---------------------------------------------------------------------------------------------------
+#  LA ESCENA NUEVA. Whisk3D arranca con Constructor, "Limpiar pantalla" y una coleccion con camara, luz y cubo,
+#  NOMBRADOS EN EL IDIOMA DEL SISTEMA: "Cubo" en espanol, "Cube" en ingles, "Куб" en ruso, "Camera" en italiano...
+#  El armado busca esos objetos por nombre (borra el cubo; los scripts del juego hacen buscar("Cámara")), asi que
+#  el script que parte de la escena nueva empieza con ESCENA_NUEVA: borra el cubo y deja la camara, la luz y la
+#  coleccion con los nombres en espanol. El resultado es el mismo en cualquier idioma.
+# ---------------------------------------------------------------------------------------------------
+ESCENA_NUEVA = '#escena nueva'                 # (correr_script la cambia por los comandos de escena_nueva)
+NOMBRES_ES = (('camara', 'Cámara'), ('luz', 'Luz'), ('coleccion', 'Colección'))
+RUTINAS_ES = ('Constructor', 'Limpiar pantalla')
+TIPOS = {1: 'cubo', 2: 'camara', 3: 'luz'}     # los "type=" del dump "scene" (malla, camara, luz)
+TIPO_COLECCION, TIPO_RUTINA = 7, 32
+_fabrica = {}
+
+
+def _whisk3d(whisk3d, lineas):
+    # (UTF-8 de ida y de vuelta: los nombres pueden venir en cirilico y Windows usa la pagina de codigos local)
+    with tempfile.NamedTemporaryFile('w', suffix='.txt', delete=False, encoding='utf-8') as f:
         f.write('\n'.join(lineas) + '\n')
         path = f.name
     try:
-        r = subprocess.run([whisk3d, '--script', path], capture_output=True, text=True, timeout=600)
+        r = subprocess.run([whisk3d, '--script', path], capture_output=True, encoding='utf-8', errors='replace',
+                           timeout=600)
     finally:
         os.remove(path)
     salida = r.stdout + r.stderr
     if r.returncode != 0:
         sys.exit(f'whisk3d --script fallo:\n{salida[-3000:]}')
     return salida
+
+
+def escena_de_fabrica(whisk3d):
+    """los nombres que ESTE whisk3d (en el idioma de esta maquina) le pone a la escena nueva:
+    {'cubo', 'camara', 'luz', 'coleccion': nombre, 'rutinas': [Constructor, Limpiar pantalla]}"""
+    if whisk3d not in _fabrica:
+        salida = _whisk3d(whisk3d, ['scene'])
+        f = {'rutinas': []}
+        for sangria, nombre, tipo in re.findall(r"\[scene\] ( *)'(.*)' type=(\d+)", salida):
+            nivel, tipo = len(sangria) // 2, int(tipo)
+            if nivel == 1 and tipo == TIPO_RUTINA:
+                f['rutinas'].append(nombre)
+            elif nivel == 1 and tipo == TIPO_COLECCION:
+                f.setdefault('coleccion', nombre)
+            elif nivel == 2 and tipo in TIPOS:
+                f.setdefault(TIPOS[tipo], nombre)
+        faltan = [k for k in ('cubo', 'camara', 'luz', 'coleccion') if k not in f]
+        raros = [f[k] for k in ('cubo', 'camara', 'luz', 'coleccion') if k in f and len(f[k].split()) != 1]
+        if faltan or raros:
+            sys.exit('whisk3d: la escena nueva no es la esperada (%s):\n%s'
+                     % ('falta ' + ', '.join(faltan) if faltan else 'nombres con espacios: ' + ', '.join(raros),
+                        salida[-3000:]))
+        _fabrica[whisk3d] = f
+    return _fabrica[whisk3d]
+
+
+def escena_nueva(whisk3d):
+    """los comandos que dejan la escena nueva igual en cualquier idioma: sin el cubo, la camara "Cámara"..."""
+    f = escena_de_fabrica(whisk3d)
+    out = ['selobj ' + f['cubo'], 'delete']
+    for k, es in NOMBRES_ES:
+        if f[k] != es:
+            out += ['activename ' + f[k], 'objname ' + es]
+    return out
+
+
+def correr_script(whisk3d, lineas):
+    if ESCENA_NUEVA in lineas:
+        i = lineas.index(ESCENA_NUEVA)
+        lineas = lineas[:i] + escena_nueva(whisk3d) + lineas[i + 1:]
+    return _whisk3d(whisk3d, lineas)
 
 
 def child_of(arm):
@@ -235,7 +293,7 @@ def main():
     if not os.path.isfile(GLB):
         subprocess.check_call([sys.executable, os.path.join(HERE, 're4_extract_leon.py'), '-o', GLB])
 
-    lineas = ['selobj Cubo', 'delete', f'importgltf {GLB}', 'activename leon_rig', 'objname Leon']
+    lineas = [ESCENA_NUEVA, f'importgltf {GLB}', 'activename leon_rig', 'objname Leon']
     for k, nom in enumerate(MALLAS):
         lineas += [f'activename {"leon" if k == 0 else f"leon.{k:03d}"}', f'objname {nom}']
     lineas += [f'guardarw3d {out}']
